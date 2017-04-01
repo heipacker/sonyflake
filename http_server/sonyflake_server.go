@@ -2,22 +2,25 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/sony/sonyflake"
+	"github.com/zpatrick/go-config"
 )
 
 var sf *sonyflake.Sonyflake
 
-// config machine id here
-func LocalMachineID() (uint16, error) {
-	return uint16(1), nil
-}
-
-func init() {
+func doInit(c *config.Config) {
 	var st sonyflake.Settings
-	st.MachineID = LocalMachineID
+	mid, err := c.Int("global.mid")
+	if err != nil {
+		panic("get mid error")
+	}
+	st.MachineID = func() (uint16, error) {
+		return uint16(mid), nil
+	}
 	sf = sonyflake.NewSonyflake(st)
 	if sf == nil {
 		panic("sonyflake not created")
@@ -42,7 +45,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	fmt.Println("Server is at :8080")
+	iniFile := config.NewINIFile("config.ini")
+	c := config.NewConfig([]config.Provider{iniFile})
+	if err := c.Load(); err != nil {
+		panic("load config error")
+	}
+	port, err := c.Int("global.port")
+	if err != nil {
+		panic("get port config error")
+	}
+	doInit(c)
+	log.Println("Server is at :" + strconv.Itoa(port))
+
 	http.HandleFunc("/", handler)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":"+strconv.Itoa(port), nil)
 }
