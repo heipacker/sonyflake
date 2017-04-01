@@ -18,6 +18,7 @@ func doInit(c *config.Config) {
 	if err != nil {
 		panic("get mid error")
 	}
+	log.Println("Server id is :" + strconv.Itoa(mid))
 	st.MachineID = func() (uint16, error) {
 		return uint16(mid), nil
 	}

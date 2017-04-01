@@ -1,9 +1,10 @@
-http-server服务
+http-server service
 =======
 
-启动一个新的实例需要配置 sonyflake_server.go里面的LocalMachineID
+startup one instance
 
-启动流程:
+step:
 
-1. go get
-2. go run sonyflake_server.go
+1. do config in config.ini file
+1. go get  or go build
+2. go run sonyflake_server.go  or ./http_server

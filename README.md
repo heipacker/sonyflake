@@ -32,11 +32,11 @@ func NewSonyflake(st Settings) *Sonyflake
 You can configure Sonyflake by the struct Settings:
 
 ```
-	type Settings struct {
-		StartTime      time.Time
-			MachineID      func() (uint16, error)
-			CheckMachineID func(uint16) bool
-	}
+type Settings struct {
+	StartTime      time.Time
+		MachineID      func() (uint16, error)
+		CheckMachineID func(uint16) bool
+}
 ```
 
 - StartTime is the time since which the Sonyflake time is defined as the elapsed time.
