@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/sony/sonyflake"
@@ -41,6 +42,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	fmt.Println("Server is at :8080")
 	http.HandleFunc("/", handler)
 	http.ListenAndServe(":8080", nil)
 }
