@@ -64,8 +64,7 @@ func (sf *Sonyflake) NextID() (uint64, error)
 		HTTP SERVER
 		------------------
 
-		The [http_server](https://github.com/sony/sonyflake/blob/master/http_server) package provides
-
+		The [httpserver](https://github.com/sony/sonyflake/blob/master/http_server) package provides
 
 
 		AWS VPC and Docker
