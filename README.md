@@ -25,13 +25,13 @@ Usage
 
 The function NewSonyflake creates a new Sonyflake instance.
 
-```go
+```
 func NewSonyflake(st Settings) *Sonyflake
 ```
 
 You can configure Sonyflake by the struct Settings:
 
-	```go
+```
 	type Settings struct {
 		StartTime      time.Time
 			MachineID      func() (uint16, error)
@@ -54,38 +54,38 @@ If CheckMachineID is nil, no validation is done.
 
 In order to get a new unique ID, you just have to call the method NextID.
 
-```go
+```
 func (sf *Sonyflake) NextID() (uint64, error)
-		```
-
-		NextID can continue to generate IDs for about 174 years from StartTime.
-		But after the Sonyflake time is over the limit, NextID returns an error.
-
-		HTTP SERVER
-		------------------
-
-		The [httpserver](https://github.com/sony/sonyflake/blob/master/http_server) package provides
+```
 
 
-		AWS VPC and Docker
-		------------------
+NextID can continue to generate IDs for about 174 years from StartTime.
+But after the Sonyflake time is over the limit, NextID returns an error.
 
-		The [awsutil](https://github.com/sony/sonyflake/blob/master/awsutil) package provides
-		the function AmazonEC2MachineID that returns the lower 16-bit private IP address of the Amazon EC2 instance.
-		It also works correctly on Docker
-		by retrieving [instance metadata](http://docs.aws.amazon.com/en_us/AWSEC2/latest/UserGuide/ec2-instance-metadata.html).
+HTTP SERVER
+-----------
 
-		[AWS VPC](http://docs.aws.amazon.com/en_us/AmazonVPC/latest/UserGuide/VPC_Subnets.html)
-		is assigned a single CIDR with a netmask between /28 and /16.
-		So if each EC2 instance has a unique private IP address in AWS VPC,
-		the lower 16 bits of the address is also unique.
-		In this common case, you can use AmazonEC2MachineID as Settings.MachineID.
+The [httpserver](https://github.com/sony/sonyflake/blob/master/http_server) package provides
 
-		See [example](https://github.com/sony/sonyflake/blob/master/example) that runs Sonyflake on AWS Elastic Beanstalk.
+AWS VPC and Docker
+------------------
 
-		License
-		-------
+The [awsutil](https://github.com/sony/sonyflake/blob/master/awsutil) package provides
+the function AmazonEC2MachineID that returns the lower 16-bit private IP address of the Amazon EC2 instance.
+It also works correctly on Docker
+by retrieving [instance metadata](http://docs.aws.amazon.com/en_us/AWSEC2/latest/UserGuide/ec2-instance-metadata.html).
+
+[AWS VPC](http://docs.aws.amazon.com/en_us/AmazonVPC/latest/UserGuide/VPC_Subnets.html)
+is assigned a single CIDR with a netmask between /28 and /16.
+So if each EC2 instance has a unique private IP address in AWS VPC,
+the lower 16 bits of the address is also unique.
+In this common case, you can use AmazonEC2MachineID as Settings.MachineID.
+
+See [example](https://github.com/sony/sonyflake/blob/master/example) that runs Sonyflake on AWS Elastic Beanstalk.
+
+License
+-------
 
 The MIT License (MIT)
 
-		See [LICENSE](https://github.com/sony/sonyflake/blob/master/LICENSE) for details.
+See [LICENSE](https://github.com/sony/sonyflake/blob/master/LICENSE) for details.
