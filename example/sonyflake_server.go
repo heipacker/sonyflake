@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/sony/sonyflake"
-	"github.com/sony/sonyflake/awsutil"
+	"github.com/heipacker/sonyflake"
+	"github.com/heipacker/sonyflake/awsutil"
 )
 
 var sf *sonyflake.Sonyflake

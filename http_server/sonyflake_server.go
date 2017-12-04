@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/sony/sonyflake"
+	"github.com/heipacker/sonyflake"
 	"github.com/zpatrick/go-config"
 )
 
