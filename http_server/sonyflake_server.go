@@ -45,6 +45,29 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	w.Write(body)
 }
 
+func handlerStr(w http.ResponseWriter, r *http.Request) {
+	id, err := sf.NextID()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	decompose := sonyflake.Decompose(id)
+	dataMap := make(map[string]interface{})
+	dataMap["id"] = strconv.FormatInt(int64(decompose["id"]), 10)
+	dataMap["msb"] = decompose["msb"]
+	dataMap["time"] = decompose["time"]
+	dataMap["sequence"] = decompose["sequence"]
+	dataMap["machine-id"] = decompose["machine-id"]
+	body, err := json.Marshal(dataMap)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header()["Content-Type"] = []string{"application/json; charset=utf-8"}
+	w.Write(body)
+}
+
 func main() {
 	iniFile := config.NewINIFile("config.ini")
 	c := config.NewConfig([]config.Provider{iniFile})
@@ -59,5 +82,6 @@ func main() {
 	log.Println("Server is at :" + strconv.Itoa(port))
 
 	http.HandleFunc("/", handler)
+	http.HandleFunc("/str", handlerStr)
 	http.ListenAndServe(":"+strconv.Itoa(port), nil)
 }
