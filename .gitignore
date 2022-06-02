@@ -1,3 +1,4 @@
 example/sonyflake_server
 
 .idea/
+vendor/
