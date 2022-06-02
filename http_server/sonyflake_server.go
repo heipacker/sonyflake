@@ -45,6 +45,26 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	w.Write(body)
 }
 
+func batchHandler(w http.ResponseWriter, r *http.Request) {
+	count, _ := strconv.ParseInt(r.URL.Query().Get("c"), 10, 64)
+	var result []map[string]uint64
+	for i := 0; i < int(count); i++ {
+		id, err := sf.NextID()
+		if err != nil {
+			continue
+		}
+		result = append(result, sonyflake.Decompose(id))
+	}
+	body, err := json.Marshal(result)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header()["Content-Type"] = []string{"application/json; charset=utf-8"}
+	w.Write(body)
+}
+
 func handlerStr(w http.ResponseWriter, r *http.Request) {
 	id, err := sf.NextID()
 	if err != nil {
@@ -82,6 +102,7 @@ func main() {
 	log.Println("Server is at :" + strconv.Itoa(port))
 
 	http.HandleFunc("/", handler)
+	http.HandleFunc("/batch", batchHandler)
 	http.HandleFunc("/str", handlerStr)
 	http.ListenAndServe(":"+strconv.Itoa(port), nil)
 }
